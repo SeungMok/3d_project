@@ -41,7 +41,54 @@
     <br><br>
     <br><br>
     <br><br>
-    <br><br>        
+    <br><br>
+    <!-- 맨 처음 차트 (전국 연도별 음주운전 사고 건수) -->
+    <div>
+      <canvas id="total_accident" width="400" height="400"></canvas>
+    </div>
+    <!-- <script src="{{ url_for('static', filename='js/total_accident_rate_copy.js') }}"></script> -->
+    <script>
+      var ctx10 = document.getElementById("total_accident");
+      var data = {
+          labels: ['2005','2006','2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018','2019'],
+          datasets: [{
+              label: '사고 건수',
+              data: [26460, 29990, 28416, 26873, 28207, 28641, 28461, 29093, 26589, 24043, 24399, 19769, 19517, 19381, 15708],
+              backgroundColor: 
+                'rgba(255, 99, 132, 0.2)',
+            
+            borderColor: 
+                'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+          }]
+      };
+      var month_barChart = new Chart(ctx10, {
+          type: 'bar',
+          data: data,
+          options: {
+                  title: {
+                      display: true,
+                      text: '2005년 ~ 2019년 음주운전 교통사고 발생건수',
+                      position : 'top',
+                      fontSize : 25
+                  },
+                  scales: {
+                      xAxes:[{
+                        gridLines: {
+                                  display : false
+                              }
+                      }],
+                      yAxes: [{
+                          ticks: {
+                               beginAtZero: true,
+                          }
+                      }]
+                  }
+              }
+      });
+    </script>
+
+    
     <br><br>
     <br><br>        
     <br><br>
@@ -50,7 +97,41 @@
     <br><br>
     <br id="accKor">
     <br><br>
+    <br><br>
+
+    <div>
+      <h4 class="page-header">년도 를 선택하세요.</h4>
+      <div class="row">
+          <select name="selBox_year", id='selBox_year'>
+              <option value="yearDefault">년도</option>
+              <option value="2005">2005년</option>
+              <option value="2006">2006년</option>
+              <option value="2007">2007년</option>
+              <option value="2008">2008년</option>
+              <option value="2009">2009년</option>
+              <option value="2010">2010년</option>
+              <option value="2011">2011년</option>
+              <option value="2012">2012년</option>
+              <option value="2013">2013년</option>
+              <option value="2014">2014년</option>
+              <option value="2015">2015년</option>
+              <option value="2016">2016년</option>
+              <option value="2017">2017년</option>
+              <option value="2018">2018년</option>
+              <option value="2019">2019년</option>                                  
+          </select>
+          
+          <button onclick="showMonthChart()" id="setDateButton">선택</button>
+      </div>
+      <br />
+    </div>
+    <div id='monthGraph-container'>
+      <canvas id="month_accident" width="400" height="400"></canvas> 
+    </div>
+    <script src="/static/js/month_accident_rate.js?version=1.20"></script>
     
+    
+
     <!-- Drunk Drive in Korea -->
     <section class="accKor">
         <div class="container">
@@ -74,8 +155,45 @@
                             </div>
                         </div>
                       </div>
-                      <div class="w-100"></div>
-                      <!-- 차트 -->
+                      <div class="w-100">
+                        <div>
+                          <h4 class="page-header">년도 를 선택하세요.</h4>
+                          <div class="row">
+                              <select name="selBox_year2", id='selBox_year2'>
+                                  <option value="yearDefault">년도</option>
+                                  <option value="2005">2005년</option>
+                                  <option value="2006">2006년</option>
+                                  <option value="2007">2007년</option>
+                                  <option value="2008">2008년</option>
+                                  <option value="2009">2009년</option>
+                                  <option value="2010">2010년</option>
+                                  <option value="2011">2011년</option>
+                                  <option value="2012">2012년</option>
+                                  <option value="2013">2013년</option>
+                                  <option value="2014">2014년</option>
+                                  <option value="2015">2015년</option>
+                                  <option value="2016">2016년</option>
+                                  <option value="2017">2017년</option>
+                                  <option value="2018">2018년</option>
+                                  <option value="2019">2019년</option>                                  
+                              </select>
+                              
+                              <button onclick="showYearAreaChart()">선택</button>
+                          </div>
+                          <br />
+                        </div>
+
+                        <div id='folium-container'>
+                          <iframe id='folium_data' src="https://repo.yona.io/files/12646"></iframe>
+                        </div>
+                        
+                        <div id=yearAreaGraph-container>
+                          <canvas id="year_area_accident" width="400" height="400"> </canvas>
+                        </div>
+                        <script src="/static/js/year_area_accident_rate.js?version=1.5"></script>
+                        
+                        <!-- 지역별 차트 -->
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -88,6 +206,38 @@
     <br>
     <br>
     <br>
+    <h4 class="page-header">지역을 선택하세요.</h4>
+    <div class="row">
+        <select name="selBox_area", id='selBox_year'>
+            <option value="areaDefault">지역</option>
+            <option value="서울">서울특별시</option>
+            <option value="부산">부산광역시</option>
+            <option value="대구">대구광역시</option>
+            <option value="광주">광주광역시</option>
+            <option value="대전">대전광역시</option>
+            <option value="인천">인천광역시</option>
+            <option value="울산">울산광역시</option>
+            <option value="세종">세종특별자치시</option>
+            <option value="경기">경기도</option>
+            <option value="강원">강원도</option>
+            <option value="충청">충청북도</option>
+            <option value="충청">충청남도</option>
+            <option value="전라">전라남도</option>
+            <option value="경상">경상북도</option>
+            <option value="경상">경상남도</option>
+            <option value="제주">제주특별자치도</option>
+            <option value="전라">전라북도</option>                             
+        </select>
+        
+        <button onclick="showAreaChart()">선택</button>
+    </div>
+    <div id = 'areaGraph-container'>
+      <canvas id="area_accident" width="400" height="400"> 
+    </div>
+    <script src="/static/js/area_accident_rate.js?version=1.1"></script>
+    </canvas>
+    <!-- 지역별 차트 -->
+
     <br>
     <br>
     <br>

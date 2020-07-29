@@ -1,7 +1,7 @@
 function showMonthChart(){
     $.ajax({	
         type : "POST",
-        data : {"year" : $("#selBox_year option:selected").val()},            
+        data : {"year" : $("#selBox_year option:selected").val()},
         url : "/month_chart",
         dataType : "json",
         success : function(result) {
@@ -13,11 +13,13 @@ function showMonthChart(){
                 labels: result.years,
                 datasets: [{
                     label: '사고 건수',
-                    data: result.values
-                }]
+                    data: result.values,
+                    fill: false,
+                    lineTension: 0.1
+                }]                
             };
             var month_barChart = new Chart(ctx1, {
-                type: 'bar',
+                type: 'line',
                 data: data,
                 options: {
                     title: {
